@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10120e">
+
+  <title>MatchLive | Painel de Futebol</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">ML</div>
+      <div>
+        <h1>MATCH<span>LIVE</span></h1>
+        <p>PAINEL DE TRANSMISSÃO</p>
+      </div>
+    </div>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      PAINEL LOCAL
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">CENTRAL DE CONTROLE</p>
+        <h2>Prepare sua transmissão.</h2>
+        <p class="muted">
+          Configure o jogo e acompanhe o placar em tempo real.
+        </p>
+      </div>
+    </section>
+
+    <section class="match-card">
+      <div class="section-heading">
+        <h3>CONFIGURAÇÃO DA PARTIDA</h3>
+        <span class="tag">JOGO AO VIVO</span>
+      </div>
+
+      <div class="teams-form">
+        <div class="field">
+          <label for="homeName">TIME DA CASA</label>
+          <input id="homeName" value="BAHIA" maxlength="35">
+        </div>
+
+        <div class="versus">VS</div>
+
+        <div class="field">
+          <label for="awayName">TIME VISITANTE</label>
+          <input id="awayName" value="SÃO PAULO" maxlength="35">
+        </div>
+      </div>
+
+      <button id="updateTeams" class="btn btn-primary">
+        ATUALIZAR PARTIDA
+      </button>
+    </section>
+
+    <section class="score-card">
+      <div class="section-heading">
+        <h3>PLACAR E CRONÔMETRO</h3>
+        <span id="matchStatus" class="tag">PRÉ-JOGO</span>
+      </div>
+
+      <div class="scoreboard">
+        <div class="score-team">
+          <div id="homeBadge" class="team-badge">BA</div>
+          <h3 id="homeDisplay">BAHIA</h3>
+          <div class="score-controls">
+            <button class="btn-score" id="homeMinus"
+              aria-label="Diminuir gols do time da casa">−</button>
+            <strong id="homeScore">0</strong>
+            <button class="btn-score" id="homePlus"
+              aria-label="Adicionar gol ao time da casa">+</button>
+          </div>
+        </div>
+
+        <div class="match-clock">
+          <div id="periodDisplay" class="period">1º TEMPO</div>
+          <div id="clock" class="clock">00:00</div>
+          <div id="clockState" class="clock-state">AGUARDANDO INÍCIO</div>
+        </div>
+
+        <div class="score-team">
+          <div id="awayBadge" class="team-badge">SP</div>
+          <h3 id="awayDisplay">SÃO PAULO</h3>
+          <div class="score-controls">
+            <button class="btn-score" id="awayMinus"
+              aria-label="Diminuir gols do visitante">−</button>
+            <strong id="awayScore">0</strong>
+            <button class="btn-score" id="awayPlus"
+              aria-label="Adicionar gol ao visitante">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="clock-controls">
+        <button id="startClock" class="btn btn-primary">
+          ▶ INICIAR 1º TEMPO
+        </button>
+        <button id="pauseClock" class="btn btn-secondary">
+          ❚❚ PAUSAR
+        </button>
+        <button id="secondHalf" class="btn btn-secondary">
+          2º TEMPO
+        </button>
+        <button id="resetClock" class="btn btn-danger">
+          ↺ REINICIAR
+        </button>
+      </div>
+
+      <p class="helper">
+        O cronômetro é controlado manualmente. Pause no intervalo
+        e inicie o segundo tempo quando a bola voltar a rolar.
+      </p>
+    </section>
+
+    <section class="rosters">
+      <div class="match-card">
+        <div class="section-heading">
+          <h3>ESCALAÇÃO DA CASA</h3>
+        </div>
+        <label for="homeRoster">Um jogador por linha</label>
+        <textarea id="homeRoster" rows="11"
+          placeholder="1 | Goleiro&#10;2 | Lateral-direito&#10;3 | Zagueiro"></textarea>
+        <button id="saveHomeRoster" class="btn btn-secondary full">
+          SALVAR ESCALAÇÃO
+        </button>
+      </div>
+
+      <div class="match-card">
+        <div class="section-heading">
+          <h3>ESCALAÇÃO VISITANTE</h3>
+        </div>
+        <label for="awayRoster">Um jogador por linha</label>
+        <textarea id="awayRoster" rows="11"
+          placeholder="1 | Goleiro&#10;2 | Lateral-direito&#10;3 | Zagueiro"></textarea>
+        <button id="saveAwayRoster" class="btn btn-secondary full">
+          SALVAR ESCALAÇÃO
+        </button>
+      </div>
+    </section>
+
+    <section class="match-card">
+      <div class="section-heading">
+        <h3>REGISTRO DE EVENTOS</h3>
+      </div>
+
+      <div class="events-form">
+        <div class="field">
+          <label for="eventTeam">EQUIPE</label>
+          <select id="eventTeam">
+            <option value="home">Time da casa</option>
+            <option value="away">Time visitante</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="eventType">EVENTO</label>
+          <select id="eventType">
+            <option value="goal">⚽ Gol</option>
+            <option value="yellow">🟨 Cartão amarelo</option>
+            <option value="red">🟥 Cartão vermelho</option>
+            <option value="sub">🔄 Substituição</option>
+            <option value="note">📝 Observação</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="eventMinute">MINUTO</label>
+          <input id="eventMinute" placeholder="Ex.: 35 ou 45+2">
+        </div>
+
+        <div class="field">
+          <label for="eventPlayer">JOGADOR / DETALHE</label>
+          <input id="eventPlayer" placeholder="Nome do jogador">
+        </div>
+      </div>
+
+      <button id="addEvent" class="btn btn-primary">
+        + REGISTRAR EVENTO
+      </button>
+
+      <div id="eventsList" class="events-list">
+        <p class="empty-state">Nenhum evento registrado.</p>
+      </div>
+
+      <button id="undoEvent" class="btn btn-secondary">
+        DESFAZER ÚLTIMO EVENTO
+      </button>
+    </section>
+
+    <section class="preview-card">
+      <div class="section-heading">
+        <h3>PRÉVIA DA TRANSMISSÃO</h3>
+        <span class="tag">PRÉVIA LOCAL</span>
+      </div>
+
+      <div class="broadcast">
+        <div class="broadcast-header">
+          <div class="broadcast-team">
+            <strong id="previewHomeName">BAHIA</strong>
+            <span id="previewHomeScore">0</span>
+          </div>
+
+          <div class="broadcast-center">
+            <strong id="previewClock">00:00</strong>
+            <span id="previewPeriod">1º TEMPO</span>
+          </div>
+
+          <div class="broadcast-team away">
+            <span id="previewAwayScore">0</span>
+            <strong id="previewAwayName">SÃO PAULO</strong>
+          </div>
+        </div>
+
+        <div class="broadcast-rosters">
+          <div>
+            <h4 id="previewHomeTitle">BAHIA</h4>
+            <ol id="previewHomeRoster"></ol>
+          </div>
+
+          <div class="camera-placeholder">
+            <div class="camera-icon">▶</div>
+            <strong>SUA WEBCAM</strong>
+            <p>A câmera será adicionada pelo OBS Studio.</p>
+          </div>
+
+          <div>
+            <h4 id="previewAwayTitle">SÃO PAULO</h4>
+            <ol id="previewAwayRoster"></ol>
+          </div>
+        </div>
+
+        <div id="previewEvent" class="broadcast-event">
+          MATCHLIVE • TRANSMISSÃO ESPORTIVA
+        </div>
+      </div>
+
+      <p class="helper">
+        Esta é uma prévia dentro do painel de controle.
+        Depois criaremos uma página exclusiva para o OBS, sem os controles.
+      </p>
+    </section>
+
+    <footer>
+      MATCHLIVE • PROJETO LOCAL • VERSÃO 1.0
+    </footer>
+  </main>
+</body>
+</html>
